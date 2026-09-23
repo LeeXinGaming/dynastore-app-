@@ -405,10 +405,8 @@ async def favicon():
     raise HTTPException(status_code=204)
 
 
-# ── Entry point ───────────────────────────────────────────────────
-
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))
     print(f"Starting DYNA-STORE server on port {port}")
     print(f"Public URL: {get_public_base_url()}")
-    uvicorn.run("render_server:app", host="0.0.0.0", port=port, log_level="info")
+    uvicorn.run(app, host="0.0.0.0", port=port)
