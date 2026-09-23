@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DYNA-STORE Online Hosting Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0c0e12;
+      --card-bg: rgba(22, 26, 35, 0.75);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --accent: #f5a623;
+      --accent-glow: rgba(245, 166, 35, 0.25);
+      --primary: #3b82f6;
+      --primary-glow: rgba(59, 130, 246, 0.25);
+      --green: #10b981;
+      --green-glow: rgba(16, 185, 129, 0.3);
+      --danger: #ef4444;
+      --text: #f3f4f6;
+      --text-muted: #9ca3af;
+      --font-main: 'Outfit', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      background-image: 
+        radial-gradient(circle at 15% 20%, rgba(245, 166, 35, 0.07) 0%, transparent 40%),
+        radial-gradient(circle at 85% 75%, rgba(59, 130, 246, 0.08) 0%, transparent 45%);
+      color: var(--text);
+      font-family: var(--font-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      backdrop-filter: blur(16px);
+      background: rgba(12, 14, 18, 0.85);
+      border-bottom: 1px solid var(--card-border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 16px 36px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-logo {
+      width: 42px;
+      height: 42px;
+      background: linear-gradient(135deg, var(--accent), #ff5722);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 20px var(--accent-glow);
+      font-weight: 800;
+      font-size: 20px;
+      color: #fff;
+    }
+
+    .brand-title {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .brand-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .server-status-pill {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--green);
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--green);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--green);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+      70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+
+    main {
+      flex: 1;
+      max-width: 1240px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 32px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    /* Tunnel Banner */
+    .tunnel-hero {
+      background: linear-gradient(135deg, rgba(26, 32, 44, 0.8), rgba(20, 24, 33, 0.9));
+      border: 1px solid rgba(245, 166, 35, 0.3);
+      border-radius: 20px;
+      padding: 24px 30px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .tunnel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .tunnel-title {
+      font-size: 18px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .url-box {
+      display: flex;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 10px 16px;
+      gap: 12px;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      overflow-x: auto;
+    }
+
+    .url-text {
+      color: var(--accent);
+      flex: 1;
+      word-break: break-all;
+    }
+
+    .btn {
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: var(--font-main);
+      border: none;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .btn-accent {
+      background: var(--accent);
+      color: #111;
+      box-shadow: 0 4px 14px var(--accent-glow);
+    }
+
+    .btn-accent:hover {
+      background: #ffb845;
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      color: var(--text);
+    }
+
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .btn-danger:hover {
+      background: rgba(239, 68, 68, 0.3);
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+    }
+
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 20px;
+      backdrop-filter: blur(8px);
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .stat-value {
+      font-size: 26px;
+      font-weight: 700;
+      margin-top: 6px;
+      letter-spacing: -0.5px;
+    }
+
+    /* Tabs */
+    .tabs-nav {
+      display: flex;
+      gap: 8px;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 12px;
+      overflow-x: auto;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-family: var(--font-main);
+      font-size: 15px;
+      font-weight: 600;
+      padding: 10px 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .tab-btn.active {
+      background: rgba(245, 166, 35, 0.12);
+      color: var(--accent);
+    }
+
+    .tab-btn:hover:not(.active) {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .tab-pane {
+      display: none;
+    }
+
+    .tab-pane.active {
+      display: block;
+    }
+
+    /* Upload Area */
+    .upload-zone {
+      border: 2px dashed rgba(245, 166, 35, 0.4);
+      background: rgba(20, 24, 32, 0.5);
+      border-radius: 18px;
+      padding: 48px 24px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .upload-zone:hover, .upload-zone.dragover {
+      border-color: var(--accent);
+      background: rgba(245, 166, 35, 0.04);
+      transform: translateY(-2px);
+    }
+
+    .upload-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      background: rgba(245, 166, 35, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      font-size: 26px;
+    }
+
+    .progress-box {
+      display: none;
+      margin-top: 20px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 20px;
+    }
+
+    .progress-bar-bg {
+      height: 10px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 12px 0;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), #ff7043);
+      border-radius: 999px;
+      transition: width 0.15s ease;
+    }
+
+    /* Tables */
+    .table-container {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    th {
+      background: rgba(0, 0, 0, 0.2);
+      padding: 14px 20px;
+      color: var(--text-muted);
+      font-weight: 600;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    td {
+      padding: 16px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+    }
+
+    /* Modal / Form */
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 12px 16px;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      color: var(--text);
+      font-family: var(--font-main);
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--accent);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: rgba(20, 24, 32, 0.95);
+      border: 1px solid var(--accent);
+      color: var(--text);
+      padding: 14px 22px;
+      border-radius: 12px;
+      font-weight: 500;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 1000;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <div class="brand-logo">DS</div>
+      <div>
+        <div class="brand-title">DYNA-STORE</div>
+        <div class="brand-subtitle">Online File & App Hosting Hub</div>
+      </div>
+    </div>
+    <div class="server-status-pill">
+      <div class="pulse-dot"></div>
+      <span id="status-label">Server Active</span>
+    </div>
+  </header>
+
+  <main>
+    <!-- Cloudflare Tunnel Hero -->
+    <section class="tunnel-hero">
+      <div class="tunnel-header">
+        <div class="tunnel-title">
+          <span>🌐</span> Public Cloudflare Online URL
+        </div>
+        <span class="badge" style="background: rgba(16, 185, 129, 0.15); color: #34d399;">
+          Global HTTPS • Direct Resume Support
+        </span>
+      </div>
+      <div class="url-box">
+        <span id="public-url-text" class="url-text">Resolving Cloudflare Tunnel...</span>
+        <button class="btn btn-accent" onclick="copyPublicUrl()">Copy URL</button>
+        <a id="public-url-link" href="#" target="_blank" class="btn btn-outline">Open</a>
+      </div>
+      <p style="font-size: 13px; color: var(--text-muted);">
+        Use this URL in your DYNA-STORE game catalog links, or send direct download links to users.
+      </p>
+    </section>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Hosted Files</div>
+        <div class="stat-value" id="stat-files">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total Storage Used</div>
+        <div class="stat-value" id="stat-storage">0.00 MB</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">App Release Version</div>
+        <div class="stat-value" style="color: var(--accent);" id="stat-app-version">1.0.0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Catalog Games</div>
+        <div class="stat-value" id="stat-games">0</div>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="tabs-nav">
+      <button class="tab-btn active" onclick="switchTab('upload')">📤 Upload Files</button>
+      <button class="tab-btn" onclick="switchTab('files')">📁 Hosted Files</button>
+      <button class="tab-btn" onclick="switchTab('app')">🚀 App (.EXE) Release</button>
+      <button class="tab-btn" onclick="switchTab('catalog')">🎮 Game Catalog</button>
+    </div>
+
+    <!-- TAB 1: UPLOAD -->
+    <div id="tab-upload" class="tab-pane active">
+      <div class="upload-zone" id="drop-zone" onclick="document.getElementById('file-input').click()">
+        <div class="upload-icon">⬇</div>
+        <h3 style="font-size: 18px; font-weight: 600;">Drag & Drop Game Files or .EXE Here</h3>
+        <p style="color: var(--text-muted); font-size: 14px;">Supports .exe, .zip, .rar, .7z, .iso and any file size.</p>
+        <button type="button" class="btn btn-accent" style="margin-top: 8px;">Select File</button>
+        <input type="file" id="file-input" style="display: none;" onchange="handleFileSelect(event)">
+      </div>
+
+      <div class="progress-box" id="upload-progress-box">
+        <div style="display: flex; justify-content: space-between; font-size: 14px; font-weight: 600;">
+          <span id="upload-filename">Uploading...</span>
+          <span id="upload-percent">0%</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="upload-bar"></div>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 13px; color: var(--text-muted);">
+          <span id="upload-stats">0 MB / 0 MB</span>
+          <span id="upload-speed">0 MB/s</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: HOSTED FILES -->
+    <div id="tab-files" class="tab-pane">
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>File Name</th>
+              <th>Size</th>
+              <th>Uploaded</th>
+              <th>Downloads</th>
+              <th>Direct Download URL</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="files-table-body">
+            <tr><td colspan="6" style="text-align: center; color: var(--text-muted);">Loading files...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAB 3: APP RELEASE (.EXE) -->
+    <div id="tab-app" class="tab-pane">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px;">
+        <div class="stat-card">
+          <h3 style="margin-bottom: 16px; font-size: 18px;">Current Published Executable</h3>
+          <div class="form-group">
+            <label>Executable Name</label>
+            <input type="text" id="app-filename" value="DYNA-STORE.exe" readonly>
+          </div>
+          <div class="form-group">
+            <label>Version</label>
+            <input type="text" id="app-version" value="1.0.0" readonly>
+          </div>
+          <div class="form-group">
+            <label>Public Download Link</label>
+            <input type="text" id="app-download-link" value="" readonly>
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <button class="btn btn-accent" onclick="copyAppUrl()">Copy App Link</button>
+            <a id="app-download-btn" href="/download/app/latest" class="btn btn-outline">Direct Download</a>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <h3 style="margin-bottom: 16px; font-size: 18px;">Publish New .EXE Build</h3>
+          <form id="app-upload-form" onsubmit="uploadNewAppBuild(event)">
+            <div class="form-group">
+              <label>Select New .EXE File</label>
+              <input type="file" id="app-file-input" accept=".exe" required>
+            </div>
+            <div class="form-group">
+              <label>Version (e.g., 1.0.1)</label>
+              <input type="text" id="app-new-version" placeholder="1.0.1" required>
+            </div>
+            <div class="form-group">
+              <label>Release Notes / Changelog</label>
+              <textarea id="app-new-changelog" rows="3" placeholder="Bug fixes, new UI features..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-accent">Upload & Publish .EXE</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: CATALOG -->
+    <div id="tab-catalog" class="tab-pane">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px;">
+        <input type="text" id="catalog-search" placeholder="Search catalog..." style="max-width: 320px;" oninput="renderCatalog()">
+        <button class="btn btn-accent" onclick="openAddGameModal()">+ Add Game Entry</button>
+      </div>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Genre</th>
+              <th>Download URL</th>
+              <th>Trailer</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="catalog-table-body">
+            <tr><td colspan="5" style="text-align: center; color: var(--text-muted);">Loading catalog...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <div id="toast" class="toast">Action completed successfully</div>
+
+  <script>
+    let currentPublicUrl = "";
+    let cachedFiles = [];
+    let cachedCatalog = [];
+
+    async function loadStatus() {
+      try {
+        const res = await fetch("/api/status");
+        const data = await res.json();
+        
+        currentPublicUrl = data.public_url || "";
+        const urlText = document.getElementById("public-url-text");
+        const urlLink = document.getElementById("public-url-link");
+
+        if (currentPublicUrl && currentPublicUrl.startsWith("http")) {
+          urlText.innerText = currentPublicUrl;
+          urlLink.href = currentPublicUrl;
+        } else {
+          urlText.innerText = data.public_url;
+        }
+
+        document.getElementById("stat-files").innerText = data.files_count || 0;
+        document.getElementById("stat-storage").innerText = data.formatted_storage || "0 MB";
+        document.getElementById("stat-app-version").innerText = data.app_version || "1.0.0";
+        document.getElementById("app-version").value = data.app_version || "1.0.0";
+        document.getElementById("app-download-link").value = (currentPublicUrl || window.location.origin) + "/download/app/latest";
+      } catch (err) {
+        console.error("Status load failed", err);
+      }
+    }
+
+    async function loadFiles() {
+      try {
+        const res = await fetch("/api/files");
+        cachedFiles = await res.json();
+        renderFiles();
+      } catch (err) {
+        console.error("Files load error", err);
+      }
+    }
+
+    function renderFiles() {
+      const tbody = document.getElementById("files-table-body");
+      if (!cachedFiles.length) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">No hosted files yet. Upload one above!</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = cachedFiles.map(f => `
+        <tr>
+          <td style="font-weight: 600;">${escapeHtml(f.name)}</td>
+          <td><span class="badge">${f.formatted_size}</span></td>
+          <td style="color: var(--text-muted); font-size: 13px;">${f.uploaded_at || 'Just now'}</td>
+          <td>${f.downloads || 0}</td>
+          <td>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <input type="text" value="${f.download_url}" readonly style="padding: 6px 10px; font-size: 12px; width: 220px;">
+              <button class="btn btn-outline" style="padding: 6px 12px;" onclick="copyText('${f.download_url}')">Copy</button>
+            </div>
+          </td>
+          <td>
+            <div style="display: flex; gap: 6px;">
+              <button class="btn btn-accent" style="padding: 6px 10px; font-size: 12px;" onclick="addFileToCatalog('${escapeHtml(f.name)}', '${f.download_url}')">Add to Catalog</button>
+              <button class="btn btn-danger" style="padding: 6px 10px; font-size: 12px;" onclick="deleteFile('${f.token}')">Delete</button>
+            </div>
+          </td>
+        </tr>
+      `).join("");
+    }
+
+    async function loadCatalog() {
+      try {
+        const res = await fetch("/api/catalog");
+        cachedCatalog = await res.json();
+        document.getElementById("stat-games").innerText = cachedCatalog.length || 0;
+        renderCatalog();
+      } catch (err) {
+        console.error("Catalog load error", err);
+      }
+    }
+
+    function renderCatalog() {
+      const tbody = document.getElementById("catalog-table-body");
+      const query = (document.getElementById("catalog-search").value || "").toLowerCase();
+      const filtered = cachedCatalog.filter(g => (g.name || "").toLowerCase().includes(query) || (g.genre || "").toLowerCase().includes(query));
+
+      if (!filtered.length) {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">No matching games in catalog.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(g => `
+        <tr>
+          <td style="font-weight: 600;">${escapeHtml(g.name || '')}</td>
+          <td><span class="badge">${escapeHtml(g.genre || 'Other')}</span></td>
+          <td style="font-family: var(--font-mono); font-size: 12px; max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+            ${escapeHtml(g.download_url || '')}
+          </td>
+          <td>${g.youtube_url ? `<a href="${g.youtube_url}" target="_blank" class="btn btn-outline" style="padding: 4px 8px; font-size: 11px;">Watch</a>` : '—'}</td>
+          <td>
+            <button class="btn btn-outline" style="padding: 4px 10px; font-size: 12px;" onclick="copyText('${g.download_url || ''}')">Copy Link</button>
+          </td>
+        </tr>
+      `).join("");
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
+      document.querySelectorAll(".tab-pane").forEach(pane => pane.classList.remove("active"));
+
+      const targetBtn = Array.from(document.querySelectorAll(".tab-btn")).find(b => b.innerText.toLowerCase().includes(tabId));
+      if (targetBtn) targetBtn.classList.add("active");
+      const targetPane = document.getElementById(`tab-${tabId}`);
+      if (targetPane) targetPane.classList.add("active");
+
+      if (tabId === 'files') loadFiles();
+      if (tabId === 'catalog') loadCatalog();
+    }
+
+    // Drag and Drop
+    const dropZone = document.getElementById("drop-zone");
+    ["dragenter", "dragover"].forEach(event => {
+      dropZone.addEventListener(event, e => { e.preventDefault(); dropZone.classList.add("dragover"); });
+    });
+    ["dragleave", "drop"].forEach(event => {
+      dropZone.addEventListener(event, e => { e.preventDefault(); dropZone.classList.remove("dragover"); });
+    });
+    dropZone.addEventListener("drop", e => {
+      const files = e.dataTransfer.files;
+      if (files.length) uploadFile(files[0]);
+    });
+
+    function handleFileSelect(e) {
+      if (e.target.files.length) uploadFile(e.target.files[0]);
+    }
+
+    function uploadFile(file) {
+      const box = document.getElementById("upload-progress-box");
+      const filenameLabel = document.getElementById("upload-filename");
+      const bar = document.getElementById("upload-bar");
+      const percentLabel = document.getElementById("upload-percent");
+      const statsLabel = document.getElementById("upload-stats");
+      const speedLabel = document.getElementById("upload-speed");
+
+      box.style.display = "block";
+      filenameLabel.innerText = file.name;
+      bar.style.width = "0%";
+      percentLabel.innerText = "0%";
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const xhr = new XMLHttpRequest();
+      let startTime = Date.now();
+
+      xhr.upload.addEventListener("progress", e => {
+        if (e.lengthComputable) {
+          const percent = Math.round((e.loaded / e.total) * 100);
+          bar.style.width = percent + "%";
+          percentLabel.innerText = percent + "%";
+
+          const uploadedMB = (e.loaded / (1024 * 1024)).toFixed(1);
+          const totalMB = (e.total / (1024 * 1024)).toFixed(1);
+          statsLabel.innerText = `${uploadedMB} MB / ${totalMB} MB`;
+
+          const elapsed = (Date.now() - startTime) / 1000;
+          if (elapsed > 0) {
+            const speed = ((e.loaded / (1024 * 1024)) / elapsed).toFixed(1);
+            speedLabel.innerText = `${speed} MB/s`;
+          }
+        }
+      });
+
+      xhr.onload = () => {
+        if (xhr.status === 200) {
+          const resp = JSON.parse(xhr.responseText);
+          showToast(`File uploaded! Public link ready.`);
+          box.style.display = "none";
+          loadStatus();
+          loadFiles();
+          switchTab('files');
+        } else {
+          showToast("Upload failed: " + xhr.statusText);
+        }
+      };
+
+      xhr.onerror = () => showToast("Upload error occurred.");
+      xhr.open("POST", "/api/upload");
+      xhr.send(formData);
+    }
+
+    async function uploadNewAppBuild(e) {
+      e.preventDefault();
+      const fileInput = document.getElementById("app-file-input");
+      const version = document.getElementById("app-new-version").value;
+      const changelog = document.getElementById("app-new-changelog").value;
+
+      if (!fileInput.files.length) return;
+
+      const formData = new FormData();
+      formData.append("file", fileInput.files[0]);
+      formData.append("version", version);
+      formData.append("changelog", changelog);
+
+      showToast("Uploading new DYNA-STORE.exe...");
+      const res = await fetch("/api/app/upload", { method: "POST", body: formData });
+      if (res.ok) {
+        showToast("New DYNA-STORE.exe published successfully!");
+        loadStatus();
+      } else {
+        showToast("App upload failed.");
+      }
+    }
+
+    async function deleteFile(token) {
+      if (!confirm("Are you sure you want to delete this file?")) return;
+      const res = await fetch(`/api/files/${token}`, { method: "DELETE" });
+      if (res.ok) {
+        showToast("File deleted.");
+        loadFiles();
+        loadStatus();
+      }
+    }
+
+    async function addFileToCatalog(name, downloadUrl) {
+      const cleanName = prompt("Enter Game Title for Catalog:", name.replace(/\.(zip|rar|7z|exe)$/i, ""));
+      if (!cleanName) return;
+      const genre = prompt("Enter Genre (e.g. Action, Racing, Open World):", "Action") || "Action";
+
+      const res = await fetch("/api/catalog", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: cleanName,
+          genre: genre,
+          download_url: downloadUrl,
+          youtube_url: "",
+          cover_image: "",
+          cover_url: ""
+        })
+      });
+
+      if (res.ok) {
+        showToast(`'${cleanName}' added to Catalog!`);
+        loadCatalog();
+        switchTab('catalog');
+      }
+    }
+
+    function openAddGameModal() {
+      const name = prompt("Game Title:");
+      if (!name) return;
+      const genre = prompt("Genre:", "Action") || "Action";
+      const download_url = prompt("Download URL (or paste public file link):");
+      if (!download_url) return;
+      const youtube_url = prompt("YouTube Trailer Link (optional):") || "";
+
+      fetch("/api/catalog", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, genre, download_url, youtube_url, cover_image: "", cover_url: "" })
+      }).then(() => {
+        showToast("Game saved to catalog!");
+        loadCatalog();
+      });
+    }
+
+    function copyPublicUrl() {
+      copyText(currentPublicUrl || window.location.origin);
+    }
+
+    function copyAppUrl() {
+      copyText((currentPublicUrl || window.location.origin) + "/download/app/latest");
+    }
+
+    function copyText(text) {
+      navigator.clipboard.writeText(text).then(() => showToast("Copied to clipboard: " + text));
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById("toast");
+      toast.innerText = msg;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 3500);
+    }
+
+    function escapeHtml(str) {
+      return (str || '').replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+    }
+
+    // Polling status every 5 seconds for tunnel URL updates
+    loadStatus();
+    setInterval(loadStatus, 4000);
+  </script>
+</body>
+</html>

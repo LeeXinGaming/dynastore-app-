@@ -1,0 +1,10 @@
+{
+  "catalog_server": "Server 2",
+  "language": "Khmer",
+  "download_folder": "C:/Users/D/Downloads",
+  "connections": 64,
+  "extract_zip": true,
+  "show_logs": true,
+  "disable_announcements": false,
+  "defender_exclusion": false
+}

@@ -1,0 +1,58 @@
+# Heavy local dependency cache (PIL, yt-dlp, etc.)
+.build-deps/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist-info/
+.eggs/
+build/
+*.spec
+
+# PyInstaller binaries (too large for GitHub, hosted on Render)
+dist/DYNA-STORE*.exe
+dist-animated/
+dist-new/
+dist-logo-motion/
+build-new/
+
+# Large binary files
+server/bin/cloudflared.exe
+server/storage/app/DYNA-STORE*.exe
+server/storage/files/*
+
+# Keep storage directory structure
+!server/storage/app/.gitkeep
+!server/storage/files/.gitkeep
+
+# Temp build artifacts
+tmp*/
+*.part
+*.part.json
+
+# Python cache
+*.pyc
+*.pyo
+
+# Environment
+.env
+*.env
+
+# IDE
+.vscode/settings.json
+*.suo
+*.user
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Compiled quickplay backups
+*.backup-*

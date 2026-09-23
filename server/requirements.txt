@@ -1,0 +1,6 @@
+# Server requirements for Render deployment
+fastapi>=0.141.0
+uvicorn[standard]>=0.30.0
+python-multipart>=0.0.9
+starlette>=1.6.0
+aiofiles>=25.1.0
